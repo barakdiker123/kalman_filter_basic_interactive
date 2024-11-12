@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import sympy as sp
 
 
 def kalman_filter(x, P, phi, Q, H, R, z):  # R is the measurement noise covariance
@@ -30,3 +31,13 @@ def generate_Q_k(delta_t, Q):  # delta is integer for the integral !!!
     )
     integrate_data = np.trapz(data, axis=0)
     return integrate_data  # Q_k note zarchan page 135 !!!
+
+
+def generate_Q_k_sym(delta_t, Q):
+    t = sp.Symbol("t")
+    upper = sp.Matrix([[sp.eye(2), t * sp.eye(2)]])
+    lower = sp.Matrix([[sp.zeros(2), sp.eye(2)]])
+    phi_cv = sp.Matrix([upper, lower])  # Constant velocity in 2d
+    Q_k = phi_cv * sp.Matrix(Q) * phi_cv.T
+    int_Q_k = Q_k.integrate(t).subs(t, delta_t)
+    return np.array(int_Q_k, dtype=float)

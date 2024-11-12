@@ -10,15 +10,28 @@ def main_run(time_dur=400, time_jumps=3, Q_0_0=0.05, Q_1_1=0.05):
     # fig2, ax_standard = plt.subplots(4, 1, figsize=(13, 40))
 
     # plt.close()
-    P_0 = np.array([[100, 0, 0, 0], [0, 100, 0, 0],
-                   [0, 0, 100, 0], [0, 0, 0, 10]])
+    P_0 = np.array(
+        [
+            [100000, 0, 0, 0],  # Line 1
+            [0, 1000, 0, 0],  # Line 2
+            [0, 0, 100, 0],  # line 3
+            [0, 0, 0, 10],
+        ]
+    )
 
     z = np.array([0, 1]).reshape(2, 1)
-    R = np.array([[4, 0], [0, 4]])
+    R = np.array(
+        [
+            [16, 0],  # Line 1 asfsdf asf asf saf dsa fsa f
+            [0, 16],
+        ]  # Line 2 dfasdf asf asf sa fsaf
+    )  # line 1  # line 2
 
     pos = np.array([0, -10]).reshape(2, 1)
+    pos_guess = np.array([0, -1000]).reshape(2, 1)
     v = np.array([5, 5]).reshape(2, 1)
     x_0 = np.concatenate((pos, v), axis=0)
+    x_0_guess = np.concatenate((pos_guess, v), axis=0)
 
     Q = np.zeros((4, 4))
     Q[0, 0] = Q_0_0  # 0.05  # q_k^y
@@ -36,9 +49,10 @@ def main_run(time_dur=400, time_jumps=3, Q_0_0=0.05, Q_1_1=0.05):
     # lower = np.concatenate((np.zeros((2,2)),np.eye(2)),axis=1)
     # phi_cv = np.concatenate((upper,lower))
 
-    Q_k = generate_Q_k(delta_t, Q)
+    # Q_k = generate_Q_k(delta_t, Q)
+    Q_k = generate_Q_k_sym(delta_t, Q)
 
-    x_n_minus_one = x_0
+    x_n_minus_one = x_0_guess
     P_n_minus_one = P_0
     location_arr = []
     location_uncertainty = []

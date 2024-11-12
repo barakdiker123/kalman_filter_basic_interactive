@@ -51,9 +51,9 @@ def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1):
     (
         time,
         error_x,
-        location_x_uncertainty,
+        location_x_variance,
         error_y,
-        location_y_uncertainty,
+        location_y_variance,
         leng_pos_x_in,
         leng_pos_x_total,
         leng_pos_y_in,
@@ -64,6 +64,8 @@ def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1):
         Q_0_0=float(Q_0_0),
         Q_1_1=float(Q_1_1),
     )
+    location_x_uncertainty = np.sqrt(location_x_variance)
+    location_y_uncertainty = np.sqrt(location_y_variance)
     d = {
         "error_x": error_x.ravel(),
         "location_x_uncertainty1": location_x_uncertainty,
@@ -76,7 +78,7 @@ def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1):
     percent_x = 100 * int(leng_pos_x_in) / int(leng_pos_x_total)
     fig_x = px.line(
         df,
-        y=["location_x_uncertainty1", "location_x_uncertainty2"],
+        y=["location_x_uncertainty1", "location_x_uncertainty2", "error_x"],
         title="Estimate X "
         + str(leng_pos_x_in)
         + "/"
@@ -84,14 +86,14 @@ def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1):
         + " Percent:"
         + str(percent_x),
     )
-    fig_x.add_scatter(
-        x=df.index, y=df["error_x"], mode="markers", marker={"size": 7})
+    # fig_x.add_scatter(
+    #    x=df.index, y=df["error_x"], mode="markers", marker={"size": 7})
     fig_x.update_layout(
         xaxis_title="time [time_dur*s]", yaxis_title="error_x[m]")
     percent_y = 100 * int(leng_pos_y_in) / int(leng_pos_y_total)
     fig_y = px.line(
         df,
-        y=["location_y_uncertainty1", "location_y_uncertainty2"],
+        y=["location_y_uncertainty1", "location_y_uncertainty2", "error_y"],
         title="Estimate Y "
         + str(leng_pos_y_in)
         + "/"
@@ -99,8 +101,9 @@ def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1):
         + " Percent:"
         + str(percent_y),
     )
-    fig_y.add_scatter(
-        x=df.index, y=df["error_y"], mode="markers", marker={"size": 7})
+    # fig_y.add_scatter(
+    #    x=df.index, y=df["error_y"], mode="markers", marker={"size": 7})
+
     fig_y.update_layout(
         xaxis_title="time [time_dur*s]", yaxis_title="error_y[m]")
     fig3 = go.Figure(data=fig_x.data + fig_y.data)  # Cool Fusion !!
