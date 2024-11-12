@@ -120,4 +120,4 @@ def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1, R_0_0, R_1_1):
 
 if __name__ == "__main__":
     # app.run(debug=True)
-    app.run_server(host="0.0.0.0", port="8050")
+    app.run_server(debug=False, host="0.0.0.0", port=8050)
