@@ -2,7 +2,7 @@ import numpy as np
 from kalman_lib import *
 
 
-def main_run(time_dur=400, time_jumps=3, Q_0_0=0.05, Q_1_1=0.05):
+def main_run(time_dur=400, time_jumps=3, Q_0_0=0.05, Q_1_1=0.05, R_0_0=16, R_1_1=16):
     rng = np.random.default_rng(12345)
     rfloat = rng.random()
 
@@ -22,8 +22,8 @@ def main_run(time_dur=400, time_jumps=3, Q_0_0=0.05, Q_1_1=0.05):
     z = np.array([0, 1]).reshape(2, 1)
     R = np.array(
         [
-            [16, 0],  # Line 1 asfsdf asf asf saf dsa fsa f
-            [0, 16],
+            [R_0_0, 0],  # Line 1 asfsdf asf asf saf dsa fsa f
+            [0, R_1_1],
         ]  # Line 2 dfasdf asf asf sa fsaf
     )  # line 1  # line 2
 

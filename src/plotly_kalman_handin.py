@@ -29,6 +29,8 @@ app.layout = html.Div(
             id="time_dur", value="400", type="number")]),
         html.Div(["Q_0_0", dcc.Input(id="Q_0_0", value="0.05", type="number")]),
         html.Div(["Q_1_1", dcc.Input(id="Q_1_1", value="0.05", type="number")]),
+        html.Div(["R_0_0", dcc.Input(id="R_0_0", value="16", type="number")]),
+        html.Div(["R_1_1", dcc.Input(id="R_1_1", value="16", type="number")]),
         dcc.Graph(figure={}, id="x_location_estimate"),
         dcc.Graph(figure={}, id="y_location_estimate"),
         dcc.Graph(figure={}, id="z_location_estimate"),
@@ -46,8 +48,10 @@ app.layout = html.Div(
     Input(component_id="time_dur", component_property="value"),
     Input(component_id="Q_0_0", component_property="value"),
     Input(component_id="Q_1_1", component_property="value"),
+    Input(component_id="R_0_0", component_property="value"),
+    Input(component_id="R_1_1", component_property="value"),
 )
-def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1):
+def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1, R_0_0, R_1_1):
     (
         time,
         error_x,
@@ -63,6 +67,8 @@ def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1):
         time_dur=int(time_dur),
         Q_0_0=float(Q_0_0),
         Q_1_1=float(Q_1_1),
+        R_0_0=float(R_0_0),
+        R_1_1=float(R_1_1),
     )
     location_x_uncertainty = np.sqrt(location_x_variance)
     location_y_uncertainty = np.sqrt(location_y_variance)
@@ -113,4 +119,5 @@ def update_graph_x_location(time_jumps, time_dur, Q_0_0, Q_1_1):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run_server(host="0.0.0.0", port="8050")
